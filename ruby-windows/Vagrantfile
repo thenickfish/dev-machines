@@ -1,0 +1,12 @@
+Vagrant.configure("2") do |config|
+  config.vm.provider "hyperv"
+  config.vm.provider :hyperv do |hv|
+    # hv.differencing_disk = false # use differencing disk instead copying whole image
+    hv.linked_clone = false
+  end
+  config.vm.box = "StefanScherer/windows_10"
+  config.vm.provision "file", source: "../workloads/ruby", destination: "/tmp/workloads/ruby"
+  config.vm.provision "file", source: "../workloads/javascript", destination: "/tmp/workloads/javascript"
+  config.vm.provision "file", source: "../workloads/productivity", destination: "/tmp/workloads/productivity"
+  config.vm.provision "shell", path: "../scripts/install-workloads.ps1", privileged: true
+end

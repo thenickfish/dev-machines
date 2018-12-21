@@ -1,0 +1,20 @@
+Vagrant.configure("2") do |config|
+  config.vm.provider "hyperv"
+  config.vm.network "public_network"
+  
+  config.vm.provider :hyperv do |hv|
+    hv.linked_clone = true
+    hv.cpus = 2
+    # hv.memory = 4096
+  end
+  config.vm.box = "StefanScherer/windows_10"
+  config.vm.provision "file", source: "../start-layout.xml", destination: "/tmp/start-layout.xml"
+  
+  config.vm.provision "file", source: "../scripts/cleanup-windows.ps1", destination: "/tmp/cleanup-windows.ps1"
+  config.vm.provision "shell", path: "../scripts/cleanup-windows.ps1", privileged: true
+
+  config.vm.provision "file", source: "../workloads/productivity", destination: "/tmp/workloads/productivity"
+  config.vm.provision "file", source: "../workloads/dotnet", destination: "/tmp/workloads/dotnet"
+  config.vm.provision "shell", path: "../scripts/install-workloads.ps1", privileged: true
+  config.vm.provision "shell", path: "../scripts/clone-all-repos.ps1", privileged: true
+end
