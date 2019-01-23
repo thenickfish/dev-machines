@@ -9,4 +9,5 @@ Vagrant.configure("2") do |config|
   config.vm.provision "file", source: "../workloads/javascript", destination: "/tmp/workloads/javascript"
   config.vm.provision "file", source: "../workloads/productivity", destination: "/tmp/workloads/productivity"
   config.vm.provision "shell", path: "../scripts/install-workloads.ps1", privileged: true
+  config.vm.provision "shell", path: "../scripts/clone-all-repos.ps1"
 end
